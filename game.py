@@ -8,7 +8,12 @@ class Map:
         self.generator = generator
 
     def is_valid_player_spawn(self, x, y):
-        return True  # TODO
+        spaces = 0
+        for xx in range(5):
+            for yy in range(5):
+                if self.grid.is_passable(x + xx - 2, y + yy - 2):
+                    spaces += 1
+        return spaces >= 4
 
     def is_passable(self, x, y):
         return self.grid[x][y] == 0
