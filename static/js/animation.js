@@ -1,8 +1,8 @@
 var Animation = function(){
   this.renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight );
-  this.renderer.backgroundColor = 0x778899;
+  this.renderer.backgroundColor = 0x201a28;
 
-  this.boardSize = { x: 15, y: 10 }
+  this.boardSize = { x: 27, y: 14 }
 
   document.getElementById("gamescreen").appendChild(this.renderer.view);
 
@@ -95,4 +95,17 @@ Animation.prototype.mousePosition = function(x, y){
   var ytile = Math.floor((ypos/65) + 0.5);
 
   this.mouseOverTile = { x: xtile, y: ytile };
+}
+
+Animation.prototype.center = function(){
+  var boardwidth = this.boardSize.x * 65;
+  var boardheight = this.boardSize.y * 65;
+
+  var canvaswidth = window.innerWidth;
+  var canvasheight = window.innerHeight;
+
+  console.log(Math.abs(canvaswidth - boardwidth) / 2)
+
+  this.stage.x += ((canvaswidth - boardwidth) + 65) / 2;
+  this.stage.y += ((canvasheight - boardheight) + 65) / 2;
 }
