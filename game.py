@@ -12,3 +12,12 @@ class Game:
 
     def add_player(self, player):
         self.players.append(player)
+
+    def setup(self):
+        pass
+
+
+class GamePlayer:
+    def __init__(self, player, position):
+        self.player = player
+        self.position = position
