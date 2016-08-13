@@ -1,4 +1,3 @@
-
 class User():
 
     def __init__(self, username):
@@ -16,6 +15,6 @@ class User():
     def get_id(self):
         return self.username
 
-    @staticmethod
-    def validate_login(password):
-        return password == 'waifu'
+    def to_JSON(self):
+        return json.dumps(self, {'username': self.get_id()},
+                          sort_keys=True, indent=4)
