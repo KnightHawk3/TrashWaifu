@@ -85,3 +85,19 @@ Waifu.prototype.getCurrentHealth = function(){
 Waifu.prototype.getMaxHealth = function(){
   return this.maxHealth;
 }
+
+
+
+
+// Probably not needed.
+var Tile = function(x, y, type) {
+  this.type = type;
+  this.texture = PIXI.Texture.fromImage('static/images/' + type);
+  this.sprite = new PIXI.Sprite(this.texture);
+
+  this.sprite.anchor.x = 0.5;
+  this.sprite.anchor.y = 0.5;
+
+  this.sprite.position.x = x;
+  this.sprite.position.y = y;
+}
