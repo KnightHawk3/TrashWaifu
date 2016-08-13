@@ -40,7 +40,7 @@ def on_join(join):
         emit('join', {'game': game.__dict__, 'pending': True})
     else:
         pending_games[0].add_player(current_user)
-        emit('join', {'game': game.__dict__, 'pending': False})
+        emit('join', {'game': pending_games[0].__dict__, 'pending': False})
 
 
 @app.route("/")
