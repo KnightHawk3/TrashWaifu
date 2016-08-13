@@ -1,6 +1,4 @@
-import json
-class User():
-
+class User:
     def __init__(self, username):
         self.username = username
 
@@ -16,5 +14,5 @@ class User():
     def get_id(self):
         return self.username
 
-    def to_JSON(self):
+    def to_dict(self):
         return {'username': self.get_id()}

@@ -22,7 +22,7 @@ def load_user(user_id):
 def on_login(data):
     username = data['username']
     login_user(User(username))
-    emit('login', {'authenticated': True, 'user': current_user.to_JSON()})
+    emit('login', {'authenticated': True, 'user': current_user.to_dict()})
 
 
 @socketio.on('leave')
@@ -55,7 +55,7 @@ def index():
 def on_connect():
     print('connected')
     if current_user.is_authenticated:
-        emit('login', {'authenticated': True, 'user': current_user.to_JSON()})
+        emit('login', {'authenticated': True, 'user': current_user.to_dict()})
     else:
         emit('login', {'authenticated': False})
 
