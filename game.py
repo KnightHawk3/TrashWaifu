@@ -8,7 +8,10 @@ class Map:
         self.generator = generator
 
     def is_valid_player_spawn(self, x, y):
-        pass
+        return True  # TODO
+
+    def is_passable(self, x, y):
+        return self.grid[x][y] == 0
 
 
 class Game:
@@ -18,6 +21,9 @@ class Game:
         self.players = [player]
         self.id = uuid.uuid1()
         self.pending = True
+
+        self.team1 = []
+        self.team2 = []
 
     def add_player(self, player):
         if self.pending:
@@ -31,7 +37,18 @@ class Game:
         for x in range(self.map.generator.width):
             for y in range(self.map.generator.height):
                 if self.map.is_valid_player_spawn(x, y):
-                    pass
+                    for xx in range(5):
+                        for yy in range(5):
+                            if self.map.is_passable(x + xx - 2, y + yy - 2):
+                                self.team1.append(GamePlayer(self.players[0], (x + xx - 2, y + yy - 2)))
+        # Find the second team.
+        for x in reversed(range(self.map.generator.width)):
+            for y in reversed(range(self.map.generator.height)):
+                if self.map.is_valid_player_spawn(x, y):
+                    for xx in range(5):
+                        for yy in range(5):
+                            if self.map.is_passable(x + xx - 2, y + yy - 2):
+                                self.team2.append(GamePlayer(self.players[1], (x + xx - 2, y + yy - 2)))
 
 
 class GamePlayer:
