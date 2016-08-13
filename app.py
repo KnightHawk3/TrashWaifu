@@ -17,7 +17,7 @@ def default_error_handler(e):
     print(request.event["args"])    # (data,)
 
 @socketio.on('connect')
-def on_connect():
+def on_connect(connect):
     if current_user.is_authenticated:
         emit('login', {'message': True})
     else:
