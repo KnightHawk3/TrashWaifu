@@ -24,7 +24,7 @@ class Game:
         generate = generation.Generator(30, 20)
         self.map = Map(generate)
         self.players = [player]
-        self.id = uuid.uuid1()
+        self.id = str(uuid.uuid1())
         self.pending = True
 
         self.team1 = []

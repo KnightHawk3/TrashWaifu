@@ -39,17 +39,13 @@ def on_join(join):
 
 @socketio.on('join')
 def on_join(join):
-    found = False
-    if join['room']:
-        for game in pending_games:
-            if game.id == join['room']:
-                found = True
-                game.add_player(current_user)
-                emit('join', {'game': game.__dict__, 'pending': False})
-    if not found or not join['room']:
+    if pending_games == []:
         game = Game(current_user)
         pending_games.append(game)
         emit('join', {'game': game.__dict__, 'pending': True})
+    else:
+        pending_games[0].add_player(current_user)
+        emit('join', {'game': pending_games[0].__dict__, 'pending': False})
 
 
 @app.route("/")
