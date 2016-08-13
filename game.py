@@ -21,7 +21,7 @@ class Map:
 
 class Game:
     def __init__(self, player):
-        generate = generation.Generator(30, 20)
+        generate = generation.Generator(27, 14)
         self.map = Map(generate)
         self.players = [player]
         self.id = str(uuid.uuid1())
