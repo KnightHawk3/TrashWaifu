@@ -52,6 +52,7 @@ def on_join(join):
         game = Game(current_user)
         pending_games.append(game)
         game = game.__dict__
+        game.grid = game.map.grid
         game.pop('map', None)
         for i, player in enumerate(game['players']):
             game['players'][i] = player.username
@@ -60,6 +61,7 @@ def on_join(join):
     else:
         pending_games[0].add_player(current_user)
         game = pending_games[0].__dict__
+        game.grid = game.map.grid
         game.pop('map', None)
 
         for i, player in enumerate(game['players']):
