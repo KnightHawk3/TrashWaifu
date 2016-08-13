@@ -7,8 +7,6 @@ var mousePos = { x: 0, y: 0 };
 var firstLoginFlag = false;
 var map = [];
 
-anim.setStage();
-
 window.addEventListener('mousedown', function(event) {
   mouseClickedFlag = true;
   mousePos = { x: event.pageX, y: event.pageY };

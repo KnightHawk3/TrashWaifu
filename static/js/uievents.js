@@ -8,12 +8,11 @@ function joinGame(){
   socket.emit('join', "");
 
   socket.on('join', function(data){
-    console.log(data);
     map = data.game.grid;
     console.log(map);
+    loadPageById("gamescreen");
+    anim.setStage();
+    anim.startAnim();
+    anim.center();
   });
-
-  loadPageById("gamescreen");
-  anim.startAnim();
-  anim.center();
 }
