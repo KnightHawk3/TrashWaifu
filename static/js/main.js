@@ -11,8 +11,6 @@ anim.addCharacter(200, 150, 'static/images/0.png');
 anim.addCharacter(300, 150, 'static/images/5.png');
 anim.startAnim();
 
-
-
 window.addEventListener('mousedown', function(event) {
   mouseClickedFlag = true;
   mousePos = { x: event.pageX, y: event.pageY };
@@ -35,8 +33,3 @@ window.addEventListener('mousemove', function(event) {
     mousePos = { x: event.pageX, y: event.pageY };
   }
 })
-
-function loginMeme(name){
-  socket.emit('login', { username: name });
-  console.log('swiggity')
-}
