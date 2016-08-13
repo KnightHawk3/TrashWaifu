@@ -7,7 +7,7 @@ var Animation = function(){
   this.stage = new PIXI.Container();
 
   this.sprites = [];
-
+  this.background = [];
 }
 
 Animation.prototype.startAnim = function(){
@@ -17,6 +17,10 @@ Animation.prototype.startAnim = function(){
 
   for(var i = 0, iLen = this.sprites.length; i < iLen; i++ ){
     this.stage.addChild(this.sprites[i]);
+  }
+
+  for(var i = 0, iLen = this.background.length; i < iLen; i++ ){
+    this.stage.addChild(this.background[i]);
   }
 
   function animate() {
@@ -39,4 +43,26 @@ Animation.prototype.addCharacter = function(x, y, textureURL){
   character.position.y = y;
 
   this.sprites.push(character);
+}
+
+Animation.prototype.setStage = function(){
+  var xDim = 30;
+  var yDim = 20;
+
+  var tileWidth = 64;
+
+  for(var x = 0; x < xDim; x++ ){
+    for(var y = 0; y < yDim; y++){
+      var texture = PIXI.Texture.fromImage('static/images/floor.png');
+      var tile = new PIXI.Sprite(texture);
+
+      tile.anchor.x = 0.5;
+      tile.anchor.y = 0.5;
+
+      tile.position.x = x * 65;
+      tile.position.y = y * 65;
+
+      this.background.push(tile);
+    }
+  }
 }
