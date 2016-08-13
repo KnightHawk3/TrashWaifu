@@ -9,6 +9,9 @@ app.config['SECRET_KEY'] = 'ayy lmao'
 socketio = SocketIO(app)
 login_manager = LoginManager()
 
+pending_games = []
+games = []
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -26,6 +29,21 @@ def on_login(data):
 def on_leave(data):
     logout_user()
     emit('login', {'authenticated': False})
+
+@socketio.on('list')
+def on_join(join):
+    emit('list', pending_games)
+
+
+@socketio.on('join')
+def on_join(join):
+    found = False
+    for game in pending_games:
+        if game.id == join['room']:
+            found = True
+            game.add_player(current_user)
+    if found == False:
+        emit('join', {'joined': False})
 
 
 @app.route("/")
