@@ -104,8 +104,6 @@ Animation.prototype.center = function(){
   var canvaswidth = window.innerWidth;
   var canvasheight = window.innerHeight;
 
-  console.log(Math.abs(canvaswidth - boardwidth) / 2)
-
   this.stage.x += ((canvaswidth - boardwidth) + 65) / 2;
   this.stage.y += ((canvasheight - boardheight) + 65) / 2;
 }
