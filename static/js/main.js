@@ -36,3 +36,5 @@ window.addEventListener('mousemove', function(event) {
   }
   anim.mousePosition(event.pageX, event.pageY);
 })
+
+socket.emit("join", "asdf")

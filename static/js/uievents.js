@@ -3,10 +3,9 @@ function loginWithName(name){
 }
 
 function joinGame(){
-  socket.emit('list', "");
-  console.log("send")
-}
+  socket.emit('join', "");
 
-socket.on('list', function(data){
-  console.log(data);
-})
+  socket.on('join', function(data){
+    console.log(data);
+  })
+}
