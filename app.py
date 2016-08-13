@@ -12,17 +12,22 @@ login_manager = LoginManager()
 
 pending_games = []
 games = []
+users = []
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    for user in users:
+        if user.id == user_id:
+            return user
 
 
 @socketio.on('login')
 def on_login(data):
     username = data['username']
-    login_user(User(username))
+    user = User(username)
+    users.append(user)
+    login_user(user)
     emit('login', {'authenticated': True, 'user': current_user.to_dict()})
 
 
