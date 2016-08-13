@@ -4,7 +4,7 @@ var Animation = function(){
 
   this.boardSize = { x: 15, y: 10 }
 
-  document.body.appendChild(this.renderer.view);
+  document.getElementById("gamescreen").appendChild(this.renderer.view);
 
   var self = this;
 

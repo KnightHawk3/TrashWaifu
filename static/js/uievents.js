@@ -7,5 +7,8 @@ function joinGame(){
 
   socket.on('join', function(data){
     console.log(data);
+
+
+    anim.startAnim();
   })
 }

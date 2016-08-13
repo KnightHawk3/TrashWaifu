@@ -7,7 +7,6 @@ var mousePos = { x: 0, y: 0 };
 var firstLoginFlag = false;
 
 anim.setStage();
-anim.startAnim();
 
 socket.on('login', function(data){
   if( !data.authenticated && firstLoginFlag ){
@@ -36,5 +35,3 @@ window.addEventListener('mousemove', function(event) {
   }
   anim.mousePosition(event.pageX, event.pageY);
 })
-
-socket.emit("join", "asdf")
