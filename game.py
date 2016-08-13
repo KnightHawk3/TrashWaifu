@@ -1,10 +1,11 @@
-import generate
+import generation
 import uuid
+
 
 class Game:
     def __init__(self, name, player):
         self.name = name
-        g = Generator(30, 20)
+        generate = generation.Generator(30, 20)
         self.map = generate.export_array_grid()
         self.players = [player]
         self.id = uuid.uuid1()
