@@ -11,18 +11,11 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html')
 
-@socketio.on_error_default
-def default_error_handler(e):
-    print(request.event["message"]) # "my error event"
-    print(request.event["args"])    # (data,)
 
 @socketio.on('connect')
-def on_connect(connect):
-    if current_user.is_authenticated:
-        emit('login', {'message': True})
-    else:
-        print("testgoku");
-        emit('login', {'message': False})
+def on_connect():
+    print('connected')
+    emit('login', {'message': False})
 
 if __name__ == "__main__":
     socketio.run(app)
