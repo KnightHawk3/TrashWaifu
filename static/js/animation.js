@@ -6,6 +6,10 @@ var Animation = function(){
 
   document.body.appendChild(this.renderer.view);
 
+  var self = this;
+
+  window.addEventListener('resize', function(){ self.renderer.resize(window.innerWidth, window.innerHeight) })
+
   this.stage = new PIXI.Container();
 
   this.mouseOverTile = { x: 0, y: 0 }
@@ -38,7 +42,7 @@ Animation.prototype.startAnim = function(){
 
     var xyz = self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y;
 
-    if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 ){
+    if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 && self.mouseOverTile.y < self.boardSize.y && 0 <= self.mouseOverTile.y){
       self.background[ xyz ].tint = 0x3498db;
     }
 
