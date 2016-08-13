@@ -1,4 +1,3 @@
-from werkzeug.security import check_password_hash
 
 class User():
 
@@ -18,5 +17,5 @@ class User():
         return self.username
 
     @staticmethod
-    def validate_login(password_hash, password):
-        return check_password_hash(password_hash, passwor
+    def validate_login(password):
+        return password == 'waifu'
