@@ -33,7 +33,7 @@ def on_leave(data):
 
 
 @socketio.on('list')
-def on_join(join):
+def on_list(data):
     emit('list', pending_games)
 
 
