@@ -15,4 +15,4 @@ class User:
         return self.username
 
     def to_dict(self):
-        return {'username': self.get_id()}
+        return {'username': self.username}

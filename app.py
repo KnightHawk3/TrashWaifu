@@ -12,17 +12,28 @@ login_manager = LoginManager()
 
 pending_games = []
 games = []
+users = []
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    for user in users:
+        if user.username == user_id:
+            return user
 
 
 @socketio.on('login')
 def on_login(data):
     username = data['username']
-    login_user(User(username))
+    for user in users:
+        if username == user.username:
+            login_user(user)
+            emit('login', {'authenticated': True,
+                           'user': current_user.to_dict()})
+            return
+    user = User(username)
+    users.append(user)
+    login_user(user)
     emit('login', {'authenticated': True, 'user': current_user.to_dict()})
 
 
@@ -34,13 +45,33 @@ def on_leave(data):
 
 @socketio.on('join')
 def on_join(join):
-    if pending_games == []:
+    if current_user.is_anonymous():
+        return
+
+    if not pending_games:
         game = Game(current_user)
         pending_games.append(game)
-        emit('join', {'game': game.__dict__, 'pending': True})
+        game = game.__dict__
+        game['grid'] = game.get('map').grid
+        game.pop('map', None)
+        for i, player in enumerate(game['players']):
+            game['players'][i] = player.username
+        print(game)
+        emit('join', {'game': game, 'pending': True})
     else:
         pending_games[0].add_player(current_user)
-        emit('join', {'game': pending_games[0].__dict__, 'pending': False})
+        game = pending_games[0].__dict__
+        game['grid'] = game.get('map').grid
+        game.pop('map', None)
+
+        for i, player in enumerate(game['players']):
+            if type(game['players'][i]) is str:
+                pass
+            else:
+                game['players'][i] = player.username
+
+        print(game)
+        emit('join', {'game': game, 'pending': False})
 
 
 @app.route("/")

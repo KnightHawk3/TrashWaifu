@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# The Node Server
+nodeserver/
+static/index.html
+
 # Distribution / packaging
 .Python
 env/

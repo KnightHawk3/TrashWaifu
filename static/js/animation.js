@@ -1,10 +1,14 @@
 var Animation = function(){
   this.renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight );
-  this.renderer.backgroundColor = 0x778899;
+  this.renderer.backgroundColor = 0x201a28;
 
-  this.boardSize = { x: 15, y: 10 }
+  this.boardSize = { x: 27, y: 14 }
 
-  document.body.appendChild(this.renderer.view);
+  document.getElementById("gamescreen").appendChild(this.renderer.view);
+
+  var self = this;
+
+  window.addEventListener('resize', function(){ self.renderer.resize(window.innerWidth, window.innerHeight) })
 
   this.stage = new PIXI.Container();
 
@@ -21,9 +25,6 @@ Animation.prototype.startAnim = function(){
 
   for(var i = 0, iLen = this.background.length; i < iLen; i++ ){
     this.stage.addChild(this.background[i]);
-    // if(i == 27) {
-    //   this.background[i].tint = 0x0A0A0A;
-    // }
   }
 
   // ADD environment stuff here
@@ -39,7 +40,11 @@ Animation.prototype.startAnim = function(){
       self.background[i].tint = 0xFFFFFF;
     }
 
-    self.background[ self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y ].tint = 0x3498db;
+    var xyz = self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y;
+
+    if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 && self.mouseOverTile.y < self.boardSize.y && 0 <= self.mouseOverTile.y){
+      self.background[ xyz ].tint = 0x3498db;
+    }
 
     self.renderer.render(self.stage);
   }
@@ -63,7 +68,12 @@ Animation.prototype.setStage = function(){
 
   for(var x = 0; x < this.boardSize.x; x++ ){
     for(var y = 0; y < this.boardSize.y; y++){
-      var texture = PIXI.Texture.fromImage('static/images/floor.png');
+      var texture;
+      if(map[x][y] == 1 ){
+        var texture = PIXI.Texture.fromImage('static/images/walltile_blank.png');
+      } else {
+        var texture = PIXI.Texture.fromImage('static/images/floor.png');
+      }
       var tile = new PIXI.Sprite(texture);
 
       tile.anchor.x = 0.5;
@@ -90,4 +100,15 @@ Animation.prototype.mousePosition = function(x, y){
   var ytile = Math.floor((ypos/65) + 0.5);
 
   this.mouseOverTile = { x: xtile, y: ytile };
+}
+
+Animation.prototype.center = function(){
+  var boardwidth = this.boardSize.x * 65;
+  var boardheight = this.boardSize.y * 65;
+
+  var canvaswidth = window.innerWidth;
+  var canvasheight = window.innerHeight;
+
+  this.stage.x += ((canvaswidth - boardwidth) + 65) / 2;
+  this.stage.y += ((canvasheight - boardheight) + 65) / 2;
 }
