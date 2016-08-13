@@ -68,7 +68,12 @@ Animation.prototype.setStage = function(){
 
   for(var x = 0; x < this.boardSize.x; x++ ){
     for(var y = 0; y < this.boardSize.y; y++){
-      var texture = PIXI.Texture.fromImage('static/images/floor.png');
+      var texture;
+      if(map[x][y] == 1 ){
+        var texture = PIXI.Texture.fromImage('static/images/walltile_blank.png');
+      } else {
+        var texture = PIXI.Texture.fromImage('static/images/floor.png');
+      }
       var tile = new PIXI.Sprite(texture);
 
       tile.anchor.x = 0.5;

@@ -5,19 +5,7 @@ var anim = new Animation();
 var mouseClickedFlag = false;
 var mousePos = { x: 0, y: 0 };
 var firstLoginFlag = false;
-
-anim.setStage();
-
-socket.on('login', function(data){
-  if( !data.authenticated && firstLoginFlag ){
-    alert("Login Failed, please try again.");
-    firstLoginFlag = true;
-  }
-
-  if( data.authenticated ){
-    console.log(data.user.username);
-  }
-})
+var map = [];
 
 window.addEventListener('mousedown', function(event) {
   mouseClickedFlag = true;

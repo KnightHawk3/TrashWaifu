@@ -52,6 +52,13 @@ class Leaf:
     def is_wall(self, x, y):
         return self.x == x or self.x + self.width - 1 == x or self.y == y or self.y + self.height - 1 == y
 
+    def get_lowest_leaves(self, leaves):
+        if self.has_split():
+            self.leftChild.get_lowest_leaves(leaves)
+            self.rightChild.get_lowest_leaves(leaves)
+        else:
+            leaves.append(self)
+
 
 class Generator:
     leaves = []
@@ -82,7 +89,9 @@ class Generator:
         for x in range(self.width):
             row = list()
             for y in range(self.height):
-                for leaf in self.leaves:
+                low_leaves = list()
+                self.root_leaf.get_lowest_leaves(low_leaves)
+                for leaf in low_leaves:
                     if leaf.collides(x, y):
                         row.append(1 if leaf.is_wall(x, y) else 0)
             grid.append(row)
