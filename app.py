@@ -18,7 +18,7 @@ users = []
 @login_manager.user_loader
 def load_user(user_id):
     for user in users:
-        if user.id == user_id:
+        if user.username == user_id:
             return user
 
 
@@ -28,7 +28,8 @@ def on_login(data):
     for user in users:
         if username == user.username:
             login_user(user)
-            emit('login', {'authenticated': True, 'user': current_user.to_dict()})
+            emit('login', {'authenticated': True,
+                           'user': current_user.to_dict()})
             return
     user = User(username)
     users.append(user)
@@ -42,20 +43,28 @@ def on_leave(data):
     emit('login', {'authenticated': False})
 
 
-@socketio.on('list')
-def on_join(join):
-    emit('list', pending_games)
-
-
 @socketio.on('join')
 def on_join(join):
     if pending_games == []:
         game = Game(current_user)
         pending_games.append(game)
-        emit('join', {'game': game.__dict__, 'pending': True})
+        game = game.__dict__
+        game.pop('map', None)
+        for i, player in enumerate(game['players']):
+            game['players'][i] = player.username
+        print(game)
+        emit('join', {'game': game, 'pending': True})
     else:
         pending_games[0].add_player(current_user)
-        emit('join', {'game': pending_games[0].__dict__, 'pending': False})
+        game = pending_games[0].__dict__
+        game.pop('map', None)
+
+        for i, player in enumerate(game['players']):
+            print(str(player))
+            game['players'][i] = player.username
+
+        print(game)
+        emit('join', {'game': game, 'pending': False})
 
 
 @app.route("/")
