@@ -45,6 +45,9 @@ def on_leave(data):
 
 @socketio.on('join')
 def on_join(join):
+    if current_user.is_anonymous:
+        return
+
     if pending_games == []:
         game = Game(current_user)
         pending_games.append(game)
