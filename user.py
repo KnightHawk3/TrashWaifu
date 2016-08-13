@@ -11,9 +11,5 @@ class User:
     def is_anonymous(self):
         return False
 
-    @classmethod
-    def get_id(self):
-        return self.username
-
     def to_dict(self):
         return {'username': self.get_id()}
