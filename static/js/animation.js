@@ -66,3 +66,8 @@ Animation.prototype.setStage = function(){
     }
   }
 }
+
+Animation.prototype.moveStage = function(x, y){
+  this.stage.x += x;
+  this.stage.y += y;
+}
