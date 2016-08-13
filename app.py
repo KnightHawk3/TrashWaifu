@@ -25,6 +25,11 @@ def load_user(user_id):
 @socketio.on('login')
 def on_login(data):
     username = data['username']
+    for user in users:
+        if username == user.username:
+            login_user(user)
+            emit('login', {'authenticated': True, 'user': current_user.to_dict()})
+            return
     user = User(username)
     users.append(user)
     login_user(user)
