@@ -21,9 +21,6 @@ Animation.prototype.startAnim = function(){
 
   for(var i = 0, iLen = this.background.length; i < iLen; i++ ){
     this.stage.addChild(this.background[i]);
-    // if(i == 27) {
-    //   this.background[i].tint = 0x0A0A0A;
-    // }
   }
 
   // ADD environment stuff here
@@ -39,7 +36,11 @@ Animation.prototype.startAnim = function(){
       self.background[i].tint = 0xFFFFFF;
     }
 
-    self.background[ self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y ].tint = 0x3498db;
+    var xyz = self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y;
+
+    if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 ){
+      self.background[ xyz ].tint = 0x3498db;
+    }
 
     self.renderer.render(self.stage);
   }

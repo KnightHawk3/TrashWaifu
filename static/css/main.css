@@ -12,12 +12,15 @@ canvas {
   padding: 0px;
 }
 
+.buttonmenu {
+  position: absolute;
+}
+
 .button {
   background-color: #2c3e50;
   color: #ecf0f1;
   text-align: center;
   box-sizing: border-box;
-  position: absolute;
 
   width: 300px;
   padding: 10px;
