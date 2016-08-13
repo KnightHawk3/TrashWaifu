@@ -3,6 +3,7 @@ from flask_login import current_user, LoginManager, \
     login_user, logout_user
 from flask_socketio import SocketIO, emit
 from user import User
+from game import Game
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ayy lmao'
@@ -30,6 +31,7 @@ def on_leave(data):
     logout_user()
     emit('login', {'authenticated': False})
 
+
 @socketio.on('list')
 def on_join(join):
     emit('list', pending_games)
@@ -44,8 +46,9 @@ def on_join(join):
                 found = True
                 game.add_player(current_user)
                 emit('join', {'game': game.__dict__, 'pending': False})
-    if found == False or !join['room']:
-        pending_games.append(Game(current_user))
+    if not found or not join['room']:
+        game = Game(current_user)
+        pending_games.append(game)
         emit('join', {'game': game.__dict__, 'pending': True})
 
 
@@ -61,6 +64,7 @@ def on_connect():
         emit('login', {'authenticated': True, 'user': current_user.to_dict()})
     else:
         emit('login', {'authenticated': False})
+
 
 if __name__ == "__main__":
     login_manager.init_app(app)
