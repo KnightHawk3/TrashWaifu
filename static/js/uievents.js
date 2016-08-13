@@ -16,3 +16,8 @@ function joinGame(){
   anim.startAnim();
   anim.center();
 }
+
+function playSound(file) {
+  var audio = new Audio('static/sound/'+file);
+  audio.play();
+}
