@@ -1,3 +1,4 @@
+import json
 class User():
 
     def __init__(self, username):
@@ -16,5 +17,4 @@ class User():
         return self.username
 
     def to_JSON(self):
-        return json.dumps(self, {'username': self.get_id()},
-                          sort_keys=True, indent=4)
+        return {'username': self.get_id()}
