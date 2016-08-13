@@ -1,4 +1,5 @@
 import random
+from math import floor, ceil
 
 
 class Leaf:
@@ -50,7 +51,13 @@ class Leaf:
         return False
 
     def is_wall(self, x, y):
-        return self.x == x or self.x + self.width - 1 == x or self.y == y or self.y + self.height - 1 == y
+        is_edge = self.x == x or self.x + self.width == x or self.y == y or self.y + self.height == y
+        dx = x - self.x
+        dy = y - self.y
+        print(str(dx) + " vs " + str(self.width/2))
+        if dx == ceil(self.width/2) or dx == floor(self.width/2) or dy == ceil(self.height/2) or dy == floor(self.height/2):
+            return False
+        return is_edge
 
     def get_lowest_leaves(self, leaves):
         if self.has_split():
@@ -93,6 +100,7 @@ class Generator:
                 self.root_leaf.get_lowest_leaves(low_leaves)
                 for leaf in low_leaves:
                     if leaf.collides(x, y):
-                        row.append(1 if leaf.is_wall(x, y) else 0)
+                        wall = leaf.is_wall(x, y) or x == 0 or y == 0 or x == self.width-1 or y == self.height-1
+                        row.append(1 if wall else 0)
             grid.append(row)
         return grid
