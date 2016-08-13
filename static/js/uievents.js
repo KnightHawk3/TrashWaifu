@@ -9,7 +9,8 @@ function joinGame(){
 
   socket.on('join', function(data){
     console.log(data);
-
+    map = data.game.grid;
+    console.log(map);
   });
 
   loadPageById("gamescreen");
