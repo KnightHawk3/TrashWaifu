@@ -1,10 +1,14 @@
 var Animation = function(){
-  this.renderer = new PIXI.WebGLRenderer(1024, 768);
-  this.renderer.backgroundColor = 0x3498db;
+  this.renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight );
+  this.renderer.backgroundColor = 0x778899;
+
+  this.boardSize = { x: 15, y: 10 }
 
   document.body.appendChild(this.renderer.view);
 
   this.stage = new PIXI.Container();
+
+  this.mouseOverTile = { x: 0, y: 0 }
 
   this.sprites = [];
   this.background = [];
@@ -15,18 +19,27 @@ Animation.prototype.startAnim = function(){
 
   animate();
 
-  for(var i = 0, iLen = this.sprites.length; i < iLen; i++ ){
-    this.stage.addChild(this.sprites[i]);
-  }
-
   for(var i = 0, iLen = this.background.length; i < iLen; i++ ){
     this.stage.addChild(this.background[i]);
+    // if(i == 27) {
+    //   this.background[i].tint = 0x0A0A0A;
+    // }
+  }
+
+  // ADD environment stuff here
+
+  for(var i = 0, iLen = this.sprites.length; i < iLen; i++ ){
+    this.stage.addChild(this.sprites[i]);
   }
 
   function animate() {
     requestAnimationFrame(animate);
 
-    self.sprites[0].rotation += 0.01;
+    for(var i = 0, iLen = self.background.length; i < iLen; i++ ){
+      self.background[i].tint = 0xFFFFFF;
+    }
+
+    self.background[ self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y ].tint = 0x3498db;
 
     self.renderer.render(self.stage);
   }
@@ -46,13 +59,10 @@ Animation.prototype.addCharacter = function(x, y, textureURL){
 }
 
 Animation.prototype.setStage = function(){
-  var xDim = 30;
-  var yDim = 20;
-
   var tileWidth = 64;
 
-  for(var x = 0; x < xDim; x++ ){
-    for(var y = 0; y < yDim; y++){
+  for(var x = 0; x < this.boardSize.x; x++ ){
+    for(var y = 0; y < this.boardSize.y; y++){
       var texture = PIXI.Texture.fromImage('static/images/floor.png');
       var tile = new PIXI.Sprite(texture);
 
@@ -70,4 +80,14 @@ Animation.prototype.setStage = function(){
 Animation.prototype.moveStage = function(x, y){
   this.stage.x += x;
   this.stage.y += y;
+}
+
+Animation.prototype.mousePosition = function(x, y){
+  var xpos = x - this.stage.x;
+  var ypos = y - this.stage.y;
+
+  var xtile = Math.floor((xpos/65) + 0.5);
+  var ytile = Math.floor((ypos/65) + 0.5);
+
+  this.mouseOverTile = { x: xtile, y: ytile };
 }

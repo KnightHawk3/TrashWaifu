@@ -8,6 +8,8 @@ html, body {
 
 canvas {
   display: block;
+  margin: 0px;
+  padding: 0px;
 }
 
 .button {
@@ -15,6 +17,7 @@ canvas {
   color: #ecf0f1;
   text-align: center;
   box-sizing: border-box;
+  position: absolute;
 
   width: 300px;
   padding: 10px;
@@ -28,5 +31,4 @@ canvas {
 
 .button:hover {
   background-color: #2980b9;
-  width: 320px;
 }
