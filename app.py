@@ -63,8 +63,10 @@ def on_join(join):
         game.pop('map', None)
 
         for i, player in enumerate(game['players']):
-            print(str(player))
-            game['players'][i] = player.username
+            if type(game['players'][i]) is str:
+                pass
+            else:
+                game['players'][i] = player.username
 
         print(game)
         emit('join', {'game': game, 'pending': False})
