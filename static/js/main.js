@@ -7,3 +7,7 @@ anim.startAnim();
 socket.on('login', function(data){
   console.log(data);
 })
+
+socket.on('connect', function(data){
+  console.log(data);
+})
