@@ -4,6 +4,7 @@ from flask_login import current_user, LoginManager, \
 from flask_socketio import SocketIO, emit, join_room
 from user import User
 from game import Game
+from copy import deepcopy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ayy lmao'
@@ -78,7 +79,16 @@ def on_pick(pick):
                 game_data = {"grid": game.map.grid, "players": list()}
                 for i, player in enumerate(game.players):
                     game_data['players'].append(player.username)
-                emit(room=game.id)
+
+                game_data['teams'] = {
+                    game.players[0]: [
+                        deepcopy(gameplayer.__dict__) for gameplayer in game.team1],
+                    game.players[1]: [
+                        deepcopy(gameplayer.__dict__) for gameplayer in game.team2],
+                }
+                game_data['teams'][game.players[0]].pop('game', None)
+                game_data['teams'][game.players[1]].pop('game', None)
+                emit('start', game_data, room=game.id)
 
 
 @app.route("/")
