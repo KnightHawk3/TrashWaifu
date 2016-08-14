@@ -27,8 +27,6 @@ Animation.prototype.startAnim = function(){
     this.stage.addChild(this.background[i]);
   }
 
-  // ADD environment stuff here
-
   for(var i = 0, iLen = this.sprites.length; i < iLen; i++ ){
     this.stage.addChild(this.sprites[i]);
   }

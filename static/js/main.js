@@ -7,6 +7,9 @@ var mousePos = { x: 0, y: 0 };
 var firstLoginFlag = false;
 var map = [];
 
+var players = [];
+var teams = [];
+
 window.addEventListener('mousedown', function(event) {
   mouseClickedFlag = true;
   mousePos = { x: event.pageX, y: event.pageY };
@@ -25,9 +28,13 @@ window.addEventListener('mousemove', function(event) {
 })
 
 socket.on('start', function(data){
-  var map = data.grid;
-  var players = data.players;
-  var teams = data.teams;
+  map = data.grid;
+  players = data.players;
+  teams = data.teams;
+
+  loadPageById('gamescreen');
+  anim.setStage();
+  anim.startAnim();
 
   console.log(data);
 });
