@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_login import current_user, LoginManager, \
     login_user, logout_user
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 from user import User
 from game import Game
 
@@ -15,8 +15,10 @@ games = []
 users = []
 
 
-# TODO Mel - Add a hook for receiving move data, and also one to send data about new players and where they are
-
+# TODO Mel - Add a hook for receiving move data,
+# and also one to send data about new players and where they are
+# @socketio.on('update')
+# def on_update(data):
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -50,6 +52,7 @@ def on_join(join):
     if current_user.is_anonymous():
         return
 
+    game = None
     if not pending_games:
         game = Game(current_user)
         pending_games.append(game)
@@ -57,14 +60,15 @@ def on_join(join):
         game = pending_games[0]
         game.add_player(current_user)
 
+    join_room(game.id)
+    current_user.join_game(game.id)
+
     emit('join', {'game_id': game.id})
 
 
 @socketio.on('pick')
 def on_pick(pick):
     character_ids = pick['char_ids']
-
-    # TODO FIND GAME FROM PLAYER - MEL
 
 
 @app.route("/")

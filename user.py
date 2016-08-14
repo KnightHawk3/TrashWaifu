@@ -1,6 +1,10 @@
 class User:
     def __init__(self, username):
         self.username = username
+        self.game = None
+
+    def join_game(self, game):
+        self.game = game
 
     def is_authenticated(self):
         return True
