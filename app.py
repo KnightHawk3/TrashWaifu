@@ -17,8 +17,33 @@ users = []
 
 # TODO Mel - Add a hook for receiving move data,
 # and also one to send data about new players and where they are
-# @socketio.on('update')
-# def on_update(data):
+@socketio.on('update')
+def on_update(data):
+    player = current_user
+    game_ref = None
+    player_ref = None
+    for game in games+pending_games:
+        if game.id == data['game']:
+            game_ref = game
+    if game_ref is None:
+        # ???
+        return
+
+    for player in game.players:
+        if current_user.username == player:
+            player_ref = player
+
+    for waifu in data['move']:
+        if player_ref.username == game.players[0]:
+            for wif in game.team1:
+                if wif.charactertype.name == waifu:
+                    wif.try_move((data['move'][waifu][0],
+                                 data['move'][waifu][1]))
+        if player_ref.username == game.players[1]:
+            for wif in game.team2:
+                if wif.charactertype.name == waifu:
+                    wif.try_move((data['move'][waifu][0],
+                                 data['move'][waifu][1]))
 
 @login_manager.user_loader
 def load_user(user_id):
