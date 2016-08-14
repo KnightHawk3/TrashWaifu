@@ -118,7 +118,9 @@ class GamePlayer:
 
         if gameplayer.health < 0:
             gameplayer.death()
+            return True
+        return False
 
     def death(self):
-        # TODO Death
-        pass
+        team_index = self.game.players.index(self.player)
+        self.game.get_team(team_index).remove(self)

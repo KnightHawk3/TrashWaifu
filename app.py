@@ -78,6 +78,9 @@ def on_attack(data):
 
     our_character.attack(enemy_character)
 
+    emit('attack', {"team": enemy_team_index, "character": enemy_character.charactertype.name,
+                    "health": enemy_character.health}, room=game_ref.id)
+
 
 @login_manager.user_loader
 def load_user(user_id):
