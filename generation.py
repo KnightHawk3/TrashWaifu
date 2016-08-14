@@ -16,7 +16,7 @@ class Leaf:
         self.width = width
         self.height = height
 
-        self.has_desks = random.random > 0.5
+        self.has_desks = random.random() > 0.5
 
     def split(self):
         if self.leftChild or self.rightChild:
