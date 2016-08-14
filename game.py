@@ -58,6 +58,12 @@ class Game:
                 overall_ready = False
         return overall_ready
 
+    def get_team(self, index):
+        if index == 0:
+            return self.team1
+        else:
+            return self.team2
+
     def setup(self):
         # Find the first team.
         team1_id = 0
@@ -112,7 +118,9 @@ class GamePlayer:
 
         if gameplayer.health < 0:
             gameplayer.death()
+            return True
+        return False
 
     def death(self):
-        # TODO Death
-        pass
+        team_index = self.game.players.index(self.player)
+        self.game.get_team(team_index).remove(self)

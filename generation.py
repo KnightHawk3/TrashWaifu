@@ -55,28 +55,38 @@ class Leaf:
     def is_edge(self, x, y):
         return self.x == x or self.x + self.width == x or self.y == y or self.y + self.height == y
 
-    def is_wall(self, x, y):
-        edge = self.is_edge(x, y)
+    def is_door(self, x, y):
+        if not self.is_edge(x, y):
+            return False
         dx = x - self.x
         dy = y - self.y
         if self.width > 9:
             if dx == ceil(self.width / 4) or dx == floor(self.width / 4) \
                     or dx == ceil((self.width / 4) * 3) or dx == floor((self.width / 4) * 3):
-                return False
+                return True
         else:
             if dx == ceil(self.width / 2) or dx == floor(self.width / 2):
-                return False
+                return True
         if self.height > 9:
             if dy == ceil(self.height/4) or dy == floor(self.height/4) \
                     or dy == ceil((self.height / 4) * 3) or dy == floor((self.height / 4) * 3):
-                return False
+                return True
         else:
             if dy == ceil(self.height/2) or dy == floor(self.height/2):
-                return False
-        return edge
+                return True
+        return False
+
+    def is_wall(self, x, y):
+        edge = self.is_edge(x, y)
+        return edge and not self.is_door(x, y)
 
     def is_desk(self, x, y):
-        return self.has_desks and not self.is_edge(x, y) and x % 2 == 0 and y % 2 == 0
+        is_beside_door = False
+        for xx in range(-1, 2):
+            for yy in range(-1, 2):
+                if self.is_door(x + xx, y + yy):
+                    is_beside_door = True
+        return self.has_desks and not is_beside_door and x % 2 == 0 and y % 2 == 0
 
     def get_lowest_leaves(self, leaves):
         if self.has_split():

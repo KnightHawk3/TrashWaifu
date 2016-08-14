@@ -15,10 +15,91 @@ games = []
 users = []
 
 
-# TODO Mel - Add a hook for receiving move data,
-# and also one to send data about new players and where they are
-# @socketio.on('update')
-# def on_update(data):
+@socketio.on('update')
+def on_update(data):
+    player = current_user
+    game_ref = None
+    player_ref = None
+    for game in games + pending_games:
+        if game.id == data['game']:
+            game_ref = game
+    if game_ref is None:
+        # ???
+        return
+
+    for player in game_ref.players:
+        if current_user.username == player:
+            player_ref = player
+
+    for waifu in data['move']:
+        if player_ref.username == game_ref.players[0]:
+            for wif in game_ref.team1:
+                if wif.charactertype.name == waifu:
+                    wif.try_move((data['move'][waifu][0],
+                                  data['move'][waifu][1]))
+        if player_ref.username == game_ref.players[1]:
+            for wif in game_ref.team2:
+                if wif.charactertype.name == waifu:
+                    wif.try_move((data['move'][waifu][0],
+                                  data['move'][waifu][1]))
+
+    game_data = {"grid": game.map.grid, "players": list()}
+    for i, player in enumerate(game.players):
+        game_data['players'].append([i, player])
+
+    team1 = list()
+    for gameplayer in game.team1:
+        team1.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
+
+    team2 = list()
+    for gameplayer in game.team2:
+        team2.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
+
+    game_data['teams'] = [
+        team1,
+        team2,
+    ]
+    print(game_data)
+    emit('update', game_data, room=game.id)
+
+
+@socketio.on('attack')
+def on_attack(data):
+    game_ref = None
+    player_ref = None
+    for game in games + pending_games:
+        if game.id == data['game']:
+            game_ref = game
+    if not game_ref:
+        return
+
+    for player in game_ref.players:
+        if current_user.username == player:
+            player_ref = player
+    if not player_ref:
+        return
+
+    team_index = 1 if game_ref.players.index(current_user.username) == 1 else 0
+    our_character = None
+    for character in game_ref.get_team(team_index):
+        if character.charactertype.name.lower() == str(data['attacked']).lower():
+            our_character = character
+    if not our_character:
+        return
+
+    enemy_team_index = 1 if game_ref.players.index(current_user.username) == 0 else 0
+    enemy_character = None
+    for character in game_ref.get_team(enemy_team_index):
+        if character.charactertype.name.lower() == str(data['attacked']).lower():
+            enemy_character = character
+    if not enemy_character:
+        return
+
+    our_character.attack(enemy_character)
+
+    emit('attack', {"team": enemy_team_index, "character": enemy_character.charactertype.name,
+                    "health": enemy_character.health}, room=game_ref.id)
+
 
 @login_manager.user_loader
 def load_user(user_id):
