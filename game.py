@@ -31,17 +31,31 @@ class Game:
         self.map = Map(generate)
         self.players = [player]
         self.id = str(uuid.uuid1())
-        self.pending = True
+        self.ready_to_start = [False, False]
+        self.picks = [[], []]
 
         self.team1 = []
         self.team2 = []
 
     def add_player(self, player):
-        if self.pending:
+        if len(self.players) < 2:
             self.players.append(player)
             return True
         else:
             return False
+
+    def user_picks(self, player, picks):
+        index = self.players.index(player)
+        self.picks[index] = picks
+        self.ready_to_start[index] = True
+
+        overall_ready = True
+        for ready in self.ready_to_start:
+            if not ready:
+                overall_ready = False
+        if overall_ready:
+            pass
+            # TODO Start the game
 
     def setup(self):
         # Find the first team.
@@ -61,13 +75,11 @@ class Game:
                             if self.map.is_passable(x + xx - 2, y + yy - 2):
                                 self.team2.append(GamePlayer(self, self.players[1], (x + xx - 2, y + yy - 2)))
 
-    def __repr__(self):
-        return json.dumps(self.__dict__)
-
 
 class GamePlayer:
-    def __init__(self, game, player, position):
+    def __init__(self, game, character, player, position):
         self.game = game
+        self.character = character
         self.player = player
         self.position = position
 
@@ -84,7 +96,6 @@ class GamePlayer:
 
 
 class ElementType:
-
     KUUDERE = ("Kuudere", None)
     YANDERE = ("Yandere", KUUDERE)
     DEREDERE = ("Deredere", YANDERE)
@@ -99,7 +110,6 @@ class ElementType:
 
 
 class CharacterType:
-
     EXCONATA = ("Exconata", 5, 3, ElementType.OTAKU, 1, 5)
     LOISE = ("Loise", 3, 2, ElementType.OTAKU, 5, 2)
     MAYO = ("Mayo", 5, 2, ElementType.TSUNDERE, 1, 7)

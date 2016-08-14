@@ -31,13 +31,12 @@ def on_login(data):
     for user in users:
         if username == user.username:
             login_user(user)
-            emit('login', {'authenticated': True,
-                           'user': current_user.to_dict()})
+            emit('login', {'authenticated': True})
             return
     user = User(username)
     users.append(user)
     login_user(user)
-    emit('login', {'authenticated': True, 'user': current_user.to_dict()})
+    emit('login', {'authenticated': True})
 
 
 @socketio.on('leave')
@@ -58,11 +57,18 @@ def on_join(join):
         game = pending_games[0]
         game.add_player(current_user)
 
-    game_data = {"grid": game.map.grid, "players": list()}
-    for i, player in enumerate(game.players):
-        game_data['players'].append(player.username)
-    print(game_data)
-    emit('join', {'game': game_data, 'pending': True})
+    #game_data = {"grid": game.map.grid, "players": list()}
+    #for i, player in enumerate(game.players):
+    #    game_data['players'].append(player.username)
+
+    emit('join', {'game_id': game.id})
+
+
+@socketio.on('pick')
+def on_pick(pick):
+    character_ids = pick['char_ids']
+
+    # TODO FIND GAME FROM PLAYER - MEL
 
 
 @app.route("/")
