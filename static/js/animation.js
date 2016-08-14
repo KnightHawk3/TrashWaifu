@@ -39,7 +39,7 @@ Animation.prototype.startAnim = function(){
     for(var i = 0, iLen = self.background.length; i < iLen; i++ ){
       self.background[i].tint = 0xFFFFFF;
     }
-
+    // Lewis was here <3
     var xyz = self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y;
 
     if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 && self.mouseOverTile.y < self.boardSize.y && 0 <= self.mouseOverTile.y){
