@@ -54,7 +54,6 @@ class Leaf:
         is_edge = self.x == x or self.x + self.width == x or self.y == y or self.y + self.height == y
         dx = x - self.x
         dy = y - self.y
-        print(str(dx) + " vs " + str(self.width/2))
         if self.width > 9:
             if dx == ceil(self.width / 4) or dx == floor(self.width / 4) \
                     or dx == ceil((self.width / 4) * 3) or dx == floor((self.width / 4) * 3):
