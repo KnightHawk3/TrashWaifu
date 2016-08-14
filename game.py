@@ -52,16 +52,12 @@ class Game:
         self.picks[index] = picks
         self.ready_to_start[index] = True
 
+    def is_ready(self):
         overall_ready = True
         for ready in self.ready_to_start:
             if not ready:
                 overall_ready = False
-        if overall_ready:
-            game_data = {"grid": self.map.grid, "players": list()}
-            for i, player in enumerate(self.players):
-                game_data['players'].append(player.username)
-            pass
-            # TODO Start the game
+        return overall_ready
 
     def setup(self):
         # Find the first team.
