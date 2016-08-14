@@ -57,10 +57,6 @@ def on_join(join):
         game = pending_games[0]
         game.add_player(current_user)
 
-    #game_data = {"grid": game.map.grid, "players": list()}
-    #for i, player in enumerate(game.players):
-    #    game_data['players'].append(player.username)
-
     emit('join', {'game_id': game.id})
 
 
