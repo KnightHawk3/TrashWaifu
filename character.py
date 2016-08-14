@@ -1,15 +1,16 @@
 class ElementType:
-    KUUDERE = ("Kuudere", None)
-    YANDERE = ("Yandere", KUUDERE)
-    DEREDERE = ("Deredere", YANDERE)
-    TSUNDERE = ("Tsundere", DEREDERE)
-    OTAKU = ("Otaku", TSUNDERE)
-
     def __init__(self, name, weakness):
         self.name = name
         self.weakness = weakness
-        if weakness == ElementType.TSUNDERE:
-            ElementType.KUUDERE.weakness = self
+        if weakness == TSUNDERE:
+            KUUDERE.weakness = self
+
+
+KUUDERE = ElementType("Kuudere", None)
+YANDERE = ElementType("Yandere", KUUDERE)
+DEREDERE = ElementType("Deredere", YANDERE)
+TSUNDERE = ElementType("Tsundere", DEREDERE)
+OTAKU = ElementType("Otaku", TSUNDERE)
 
 
 class CharacterType:
@@ -22,16 +23,16 @@ class CharacterType:
         self.speed = speed
 
 
-EXCONATA = CharacterType("Exconata", 5, 3, ElementType.OTAKU, 1, 5)
-LOISE = CharacterType("Loise", 3, 2, ElementType.OTAKU, 5, 2)
-MAYO = CharacterType("Mayo", 5, 2, ElementType.TSUNDERE, 1, 7)
-WINERY = CharacterType("Winery", 4, 5, ElementType.TSUNDERE, 2, 2)
-BLEAKU = CharacterType("Bleaku", 6, 1, ElementType.DEREDERE, 5, 3)
-MOYURI = CharacterType("Moyuri", 2, 8, ElementType.DEREDERE, 2, 3)
-RAM = CharacterType("RAM", 5, 5, ElementType.KUUDERE, 1, 1)
-RAY = CharacterType("Ray", 3, 6, ElementType.KUUDERE, 2, 4)
-DONTNO = CharacterType("Dontno", -1, -1, ElementType.YANDERE, 2, 3)
-STABBER = CharacterType("Stabber", 7, 1, ElementType.YANDERE, 1, 6)
+EXCONATA = CharacterType("Exconata", 5, 3, OTAKU, 1, 5)
+LOISE = CharacterType("Loise", 3, 2, OTAKU, 5, 2)
+MAYO = CharacterType("Mayo", 5, 2, TSUNDERE, 1, 7)
+WINERY = CharacterType("Winery", 4, 5, TSUNDERE, 2, 2)
+BLEAKU = CharacterType("Bleaku", 6, 1, DEREDERE, 5, 3)
+MOYURI = CharacterType("Moyuri", 2, 8, DEREDERE, 2, 3)
+RAM = CharacterType("RAM", 5, 5, KUUDERE, 1, 1)
+RAY = CharacterType("Ray", 3, 6, KUUDERE, 2, 4)
+DONTNO = CharacterType("Dontno", -1, -1, YANDERE, 2, 3)
+STABBER = CharacterType("Stabber", 7, 1, YANDERE, 1, 6)
 
 characters = {
     "exconata": EXCONATA,
