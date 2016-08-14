@@ -89,6 +89,7 @@ class GamePlayer:
         self.charactertype = charactertype
         self.player = player
         self.position = position
+        self.health = 10.0
 
         # TODO Spawn Player
 
@@ -101,3 +102,17 @@ class GamePlayer:
             return True
         return False
 
+    def attack(self, gameplayer):
+        damage_modifier = gameplayer.charactertype.defence / 10.0
+        damage_dealt = (self.charactertype.attack * damage_modifier)
+        if gameplayer.charactertype.element.weakness.name == self.charactertype.element.name:
+            damage_dealt *= 1.2
+
+        gameplayer.health -= damage_dealt
+
+        if gameplayer.health < 0:
+            gameplayer.death()
+
+    def death(self):
+        # TODO Death
+        pass

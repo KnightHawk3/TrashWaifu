@@ -4,7 +4,6 @@ from flask_login import current_user, LoginManager, \
 from flask_socketio import SocketIO, emit, join_room
 from user import User
 from game import Game
-from copy import deepcopy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ayy lmao'
