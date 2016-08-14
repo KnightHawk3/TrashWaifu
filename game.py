@@ -30,7 +30,7 @@ class Game:
     def __init__(self, player):
         generate = generation.Generator(27, 14)
         self.map = Map(generate)
-        self.players = [player]
+        self.players = [player.username]
         self.id = str(uuid.uuid1())
         self.ready_to_start = [False, False]
         self.picks = [[], []]
@@ -40,16 +40,15 @@ class Game:
 
     def add_player(self, player):
         if len(self.players) < 2:
-            self.players.append(player)
+            self.players.append(player.username)
             return True
         else:
             return False
 
     def user_picks(self, player, picks):
-        index = self.players.index(player)
+        index = self.players.index(player.username)
         for pick in picks:
             self.picks[index].append(character.characters.get(str(pick).lower()))
-        self.picks[index] = picks
         self.ready_to_start[index] = True
 
     def is_ready(self):
@@ -67,8 +66,8 @@ class Game:
                 if self.map.is_valid_player_spawn(x, y):
                     for xx in range(5):
                         for yy in range(5):
-                            if self.map.is_passable(x + xx - 2, y + yy - 2):
-                                self.team1.append(GamePlayer(self, self.picks[team1_id],
+                            if self.map.is_passable(x + xx - 2, y + yy - 2) and team1_id < len(self.picks[0]):
+                                self.team1.append(GamePlayer(self, self.picks[0][team1_id],
                                                              self.players[0], (x + xx - 2, y + yy - 2)))
                                 team1_id += 1
         team2_id = 0
@@ -78,8 +77,8 @@ class Game:
                 if self.map.is_valid_player_spawn(x, y):
                     for xx in range(5):
                         for yy in range(5):
-                            if self.map.is_passable(x + xx - 2, y + yy - 2):
-                                self.team2.append(GamePlayer(self, self.picks[team2_id],
+                            if self.map.is_passable(x + xx - 2, y + yy - 2) and team2_id < len(self.picks[1]):
+                                self.team2.append(GamePlayer(self, self.picks[1][team2_id],
                                                              self.players[1], (x + xx - 2, y + yy - 2)))
                                 team2_id += 1
 

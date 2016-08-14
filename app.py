@@ -50,6 +50,7 @@ def on_leave(data):
 
 @socketio.on('join')
 def on_join(join):
+    print("Joined " + current_user.username + " " + str(current_user))
     if current_user.is_anonymous():
         return
 
@@ -72,22 +73,29 @@ def on_join(join):
 @socketio.on('pick')
 def on_pick(pick):
     character_ids = pick['char_ids']
-    for game in games:
+    for game in pending_games + games:
         if game.id == current_user.game:
             game.user_picks(current_user, character_ids)
             if game.is_ready():
+                game.setup()
+
                 game_data = {"grid": game.map.grid, "players": list()}
                 for i, player in enumerate(game.players):
-                    game_data['players'].append(player.username)
+                    game_data['players'].append(player)
+
+                team1 = list()
+                for gameplayer in game.team1:
+                    team1.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
+
+                team2 = list()
+                for gameplayer in game.team2:
+                    team2.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
 
                 game_data['teams'] = {
-                    game.players[0]: [
-                        deepcopy(gameplayer.__dict__) for gameplayer in game.team1],
-                    game.players[1]: [
-                        deepcopy(gameplayer.__dict__) for gameplayer in game.team2],
+                    game.players[0]: team1,
+                    game.players[1]: team2,
                 }
-                game_data['teams'][game.players[0]].pop('game', None)
-                game_data['teams'][game.players[1]].pop('game', None)
+                print(game_data)
                 emit('start', game_data, room=game.id)
 
 
