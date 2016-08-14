@@ -59,8 +59,8 @@ def on_join(join):
         pending_games.append(game)
     else:
         game = pending_games[0]
-        pending_games.pop(0)
         games.append(pending_games[0])
+        pending_games.pop(0)
         game.add_player(current_user)
 
     join_room(game.id)
