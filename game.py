@@ -1,6 +1,7 @@
 import generation
 import uuid
 import json
+import character
 
 
 class Map:
@@ -31,27 +32,50 @@ class Game:
         self.map = Map(generate)
         self.players = [player]
         self.id = str(uuid.uuid1())
-        self.pending = True
+        self.ready_to_start = [False, False]
+        self.picks = [[], []]
 
         self.team1 = []
         self.team2 = []
 
     def add_player(self, player):
-        if self.pending:
+        if len(self.players) < 2:
             self.players.append(player)
             return True
         else:
             return False
 
+    def user_picks(self, player, picks):
+        index = self.players.index(player)
+        for pick in picks:
+            self.picks[index].append(character.characters.get(str(pick).lower()))
+        self.picks[index] = picks
+        self.ready_to_start[index] = True
+
+        overall_ready = True
+        for ready in self.ready_to_start:
+            if not ready:
+                overall_ready = False
+        if overall_ready:
+            game_data = {"grid": self.map.grid, "players": list()}
+            for i, player in enumerate(self.players):
+                game_data['players'].append(player.username)
+            pass
+            # TODO Start the game
+
     def setup(self):
         # Find the first team.
+        team1_id = 0
         for x in range(self.map.generator.width):
             for y in range(self.map.generator.height):
                 if self.map.is_valid_player_spawn(x, y):
                     for xx in range(5):
                         for yy in range(5):
                             if self.map.is_passable(x + xx - 2, y + yy - 2):
-                                self.team1.append(GamePlayer(self, self.players[0], (x + xx - 2, y + yy - 2)))
+                                self.team1.append(GamePlayer(self, self.picks[team1_id],
+                                                             self.players[0], (x + xx - 2, y + yy - 2)))
+                                team1_id += 1
+        team2_id = 0
         # Find the second team.
         for x in reversed(range(self.map.generator.width)):
             for y in reversed(range(self.map.generator.height)):
@@ -59,15 +83,15 @@ class Game:
                     for xx in range(5):
                         for yy in range(5):
                             if self.map.is_passable(x + xx - 2, y + yy - 2):
-                                self.team2.append(GamePlayer(self, self.players[1], (x + xx - 2, y + yy - 2)))
-
-    def __repr__(self):
-        return json.dumps(self.__dict__)
+                                self.team2.append(GamePlayer(self, self.picks[team2_id],
+                                                             self.players[1], (x + xx - 2, y + yy - 2)))
+                                team2_id += 1
 
 
 class GamePlayer:
-    def __init__(self, game, player, position):
+    def __init__(self, game, charactertype, player, position):
         self.game = game
+        self.charactertype = charactertype
         self.player = player
         self.position = position
 
@@ -82,39 +106,3 @@ class GamePlayer:
             return True
         return False
 
-
-class ElementType:
-
-    KUUDERE = ("Kuudere", None)
-    YANDERE = ("Yandere", KUUDERE)
-    DEREDERE = ("Deredere", YANDERE)
-    TSUNDERE = ("Tsundere", DEREDERE)
-    OTAKU = ("Otaku", TSUNDERE)
-
-    def __init__(self, name, weakness):
-        self.name = name
-        self.weakness = weakness
-        if weakness == ElementType.TSUNDERE:
-            ElementType.KUUDERE.weakness = self
-
-
-class CharacterType:
-
-    EXCONATA = ("Exconata", 5, 3, ElementType.OTAKU, 1, 5)
-    LOISE = ("Loise", 3, 2, ElementType.OTAKU, 5, 2)
-    MAYO = ("Mayo", 5, 2, ElementType.TSUNDERE, 1, 7)
-    WINERY = ("Winery", 4, 5, ElementType.TSUNDERE, 2, 2)
-    BLEAKU = ("Bleaku", 6, 1, ElementType.DEREDERE, 5, 3)
-    MOYURI = ("Moyuri", 2, 8, ElementType.DEREDERE, 2, 3)
-    RAM = ("RAM", 5, 5, ElementType.KUUDERE, 1, 1)
-    RAY = ("Ray", 3, 6, ElementType.KUUDERE, 2, 4)
-    DONTNO = ("Dontno", -1, -1, ElementType.YANDERE, 2, 3)
-    STABBER = ("Stabber", 7, 1, ElementType.YANDERE, 1, 6)
-
-    def __init__(self, name, attack, defence, element, attack_range, speed):
-        self.name = name
-        self.attack = attack
-        self.defence = defence
-        self.element = element
-        self.attack_range = attack_range
-        self.speed = speed
