@@ -20,6 +20,23 @@ var Animation = function(){
 
 Animation.prototype.startAnim = function(){
   var self = this;
+  var grid, finder, gridBackup,
+  oldMouseOver = {x: 0, y: 0};
+
+  grid = new PF.Grid(this.boardSize.x, this.boardSize.y);
+
+  for(var x = 0; x < map.length; x++)
+  {
+    for(var y = 0; y < map[x].length; y++) {
+      if(map[x][y] != 0){
+          grid.setWalkableAt(x, y, false);
+      }
+    }
+  }
+
+  gridBackup = grid.clone();
+  finder = new PF.AStarFinder({allowDiagonal: true});
+
 
   animate();
 
@@ -41,7 +58,24 @@ Animation.prototype.startAnim = function(){
     var xyz = self.mouseOverTile.y + self.mouseOverTile.x * self.boardSize.y;
 
     if(xyz < self.boardSize.y * self.boardSize.x && xyz >= 0 && self.mouseOverTile.y < self.boardSize.y && 0 <= self.mouseOverTile.y){
-      self.background[ xyz ].tint = 0x3498db;
+      self.background[ xyz ].tint = 0xFF0000; //0x3498db;
+    }
+
+    //Pathfinding
+    grid = gridBackup.clone();
+    if(oldMouseOver.x != self.mouseOverTile.x || oldMouseOver.y != self.mouseOverTile.y){
+      oldMouseOver = self.mouseOverTile;
+      path = finder.findPath(1, 1, self.mouseOverTile.x, self.mouseOverTile.y, grid);
+    }
+
+    path = path.slice(0, 6);
+
+    for(var i = 0; i < path.length; i++){
+      var pathXyz = path[i][1] + path[i][0] * self.boardSize.y;
+      if(pathXyz < self.boardSize.y * self.boardSize.x && pathXyz >= 0 && path[i][1] < self.boardSize.y && 0 <= path[i][1]){
+        self.background[ pathXyz ].tint = 0xff00ff;// 0x3498db;
+      }
+
     }
 
     self.renderer.render(self.stage);

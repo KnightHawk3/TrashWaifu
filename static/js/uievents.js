@@ -10,6 +10,7 @@ function loginWithName(){
       })
 
       socket.on('join', function(data){
+        playSound('waifu_faito.mp3');
         loadPageById('pickscreen');
       });
     }
