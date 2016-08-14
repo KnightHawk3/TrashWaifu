@@ -18,7 +18,7 @@ class Map:
         return spaces >= 4
 
     def is_passable(self, x, y):
-        if x >= len(self.grid) or y >= len(self.grid[x]):
+        if x < 0 or x >= len(self.grid) or y < 0 or y >= len(self.grid[x]):
             return False
         return self.grid[x][y] == 0
 
