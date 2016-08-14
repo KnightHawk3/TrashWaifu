@@ -43,6 +43,25 @@ def on_update(data):
                     wif.try_move((data['move'][waifu][0],
                                   data['move'][waifu][1]))
 
+    game_data = {"grid": game.map.grid, "players": list()}
+    for i, player in enumerate(game.players):
+        game_data['players'].append([i, player])
+
+    team1 = list()
+    for gameplayer in game.team1:
+        team1.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
+
+    team2 = list()
+    for gameplayer in game.team2:
+        team2.append({"character": gameplayer.charactertype.name, "position": gameplayer.position})
+
+    game_data['teams'] = [
+        team1,
+        team2,
+    ]
+    print(game_data)
+    emit('update', game_data, room=game.id)
+
 
 @socketio.on('attack')
 def on_attack(data):
