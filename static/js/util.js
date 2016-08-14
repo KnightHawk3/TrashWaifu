@@ -15,13 +15,12 @@ function loadPageById(id){
 
 var waifus = [];
 
-function pickWaifu(waifu){
+function pickWaifu(waifu, id){
   waifus.push(waifu);
 
-  console.log(waifu);
+  document.getElementById(id).style.borderColor = 'blue';
 
   if( waifus.length >= 4 ){
-    console.log("woo")
     socket.emit('pick', { charids: waifus });
   }
 }
