@@ -58,6 +58,8 @@ def on_join(join):
         pending_games.append(game)
     else:
         game = pending_games[0]
+        pending_games.pop(0)
+        games.append(pending_games[0])
         game.add_player(current_user)
 
     join_room(game.id)
@@ -69,6 +71,14 @@ def on_join(join):
 @socketio.on('pick')
 def on_pick(pick):
     character_ids = pick['char_ids']
+    for game in games:
+        if game.id == current_user.game:
+            game.user_picks(current_user, character_ids)
+            if game.is_ready():
+                game_data = {"grid": game.map.grid, "players": list()}
+                for i, player in enumerate(game.players):
+                    game_data['players'].append(player.username)
+                emit(room=game.id)
 
 
 @app.route("/")
