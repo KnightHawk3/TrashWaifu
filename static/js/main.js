@@ -25,5 +25,9 @@ window.addEventListener('mousemove', function(event) {
 })
 
 socket.on('start', function(data){
+  var map = data.grid;
+  var players = data.players;
+  var teams = data.teams;
+
   console.log(data);
 });
