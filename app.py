@@ -15,6 +15,9 @@ games = []
 users = []
 
 
+# TODO Mel - Add a hook for receiving move data, and also one to send data about new players and where they are
+
+
 @login_manager.user_loader
 def load_user(user_id):
     for user in users:
@@ -51,27 +54,15 @@ def on_join(join):
     if not pending_games:
         game = Game(current_user)
         pending_games.append(game)
-        game = game.__dict__
-        game['grid'] = game.get('map').grid
-        game.pop('map', None)
-        for i, player in enumerate(game['players']):
-            game['players'][i] = player.username
-        print(game)
-        emit('join', {'game': game, 'pending': True})
     else:
-        pending_games[0].add_player(current_user)
-        game = pending_games[0].__dict__
-        game['grid'] = game.get('map').grid
-        game.pop('map', None)
+        game = pending_games[0]
+        game.add_player(current_user)
 
-        for i, player in enumerate(game['players']):
-            if type(game['players'][i]) is str:
-                pass
-            else:
-                game['players'][i] = player.username
-
-        print(game)
-        emit('join', {'game': game, 'pending': False})
+    game_data = {"grid": game.map.grid, "players": list()}
+    for i, player in enumerate(game.players):
+        game_data['players'].append(player.username)
+    print(game_data)
+    emit('join', {'game': game_data, 'pending': True})
 
 
 @app.route("/")
