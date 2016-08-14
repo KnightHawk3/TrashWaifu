@@ -58,6 +58,12 @@ class Game:
                 overall_ready = False
         return overall_ready
 
+    def get_team(self, index):
+        if index == 0:
+            return self.team1
+        else:
+            return self.team2
+
     def setup(self):
         # Find the first team.
         team1_id = 0
