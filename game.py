@@ -105,7 +105,7 @@ class GamePlayer:
     def attack(self, gameplayer):
         damage_modifier = gameplayer.charactertype.defence / 10.0
         damage_dealt = (self.charactertype.attack * damage_modifier)
-        if gameplayer.charactertype.element.weakness == self.charactertype.element:
+        if gameplayer.charactertype.element.weakness.name == self.charactertype.element.name:
             damage_dealt *= 1.2
 
         gameplayer.health -= damage_dealt

@@ -2,8 +2,6 @@ class ElementType:
     def __init__(self, name, weakness):
         self.name = name
         self.weakness = weakness
-        if weakness == TSUNDERE:
-            KUUDERE.weakness = self
 
 
 KUUDERE = ElementType("Kuudere", None)
@@ -11,6 +9,8 @@ YANDERE = ElementType("Yandere", KUUDERE)
 DEREDERE = ElementType("Deredere", YANDERE)
 TSUNDERE = ElementType("Tsundere", DEREDERE)
 OTAKU = ElementType("Otaku", TSUNDERE)
+
+KUUDERE.weakness = OTAKU
 
 
 class CharacterType:

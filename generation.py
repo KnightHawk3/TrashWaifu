@@ -52,8 +52,11 @@ class Leaf:
                 return True
         return False
 
+    def is_edge(self, x, y):
+        return self.x == x or self.x + self.width == x or self.y == y or self.y + self.height == y
+
     def is_wall(self, x, y):
-        is_edge = self.x == x or self.x + self.width == x or self.y == y or self.y + self.height == y
+        edge = self.is_edge(x, y)
         dx = x - self.x
         dy = y - self.y
         if self.width > 9:
@@ -70,10 +73,10 @@ class Leaf:
         else:
             if dy == ceil(self.height/2) or dy == floor(self.height/2):
                 return False
-        return is_edge
+        return edge
 
     def is_desk(self, x, y):
-        return self.has_desks and x % 2 == 0 and y % 2 == 0
+        return self.has_desks and not self.is_edge(x, y) and x % 2 == 0 and y % 2 == 0
 
     def get_lowest_leaves(self, leaves):
         if self.has_split():
