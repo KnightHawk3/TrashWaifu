@@ -87,6 +87,25 @@ Animation.prototype.setStage = function(){
   }
 }
 
+Animation.prototype.loadTeams = function(){
+  for(var i = 0, iLen = teams.length; i++){
+    for(var j = 0, jLen = teams[i].length; j++){
+      var texture = PIXI.Texture.fromImage(textureURL);
+      var character = new PIXI.Sprite(texture);
+
+      character.anchor.x = 0.5;
+      character.anchor.y = 0.5;
+
+      character.position.x = ;
+      character.position.y = y;
+
+      this.sprites.push(character);
+    }
+  }
+
+
+}
+
 Animation.prototype.moveStage = function(x, y){
   this.stage.x += x;
   this.stage.y += y;

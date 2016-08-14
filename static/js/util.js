@@ -1,8 +1,3 @@
-function coordsfinder(x, y){
-    var newx = x*65;
-    var newy = y*65;
-}
-
 var pageEnum = ['loginscreen', 'pickscreen', 'gamescreen']
 
 function loadPageById(id){
