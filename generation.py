@@ -16,6 +16,8 @@ class Leaf:
         self.width = width
         self.height = height
 
+        self.has_desks = random.random > 0.5
+
     def split(self):
         if self.leftChild or self.rightChild:
             return False
@@ -70,6 +72,9 @@ class Leaf:
                 return False
         return is_edge
 
+    def is_desk(self, x, y):
+        return self.has_desks and x % 2 == 0 and y % 2 == 0
+
     def get_lowest_leaves(self, leaves):
         if self.has_split():
             self.leftChild.get_lowest_leaves(leaves)
@@ -112,6 +117,12 @@ class Generator:
                 for leaf in low_leaves:
                     if leaf.collides(x, y):
                         wall = leaf.is_wall(x, y) or x == 0 or y == 0 or x == self.width-1 or y == self.height-1
-                        row.append(1 if wall else 0)
+                        desk = leaf.is_desk(x, y)
+                        data_bit = 0
+                        if wall:
+                            data_bit = 1
+                        elif desk:
+                            data_bit = 2
+                        row.append(data_bit)
             grid.append(row)
         return grid
