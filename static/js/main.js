@@ -60,11 +60,17 @@ socket.on('start', function(data){
       selectedWaifu = { i: -1, j: -1 };
       anim.setPathFindingOrigin(0, 0);
 
-      socket.emit('update', {
-        move: ,
-        game_id: gameid,
-      });
+      var senddata = { game: gameid };
 
+      senddata.move = {};
+
+      for(var i = 0, iLen = teams.length; i < iLen; i++){
+        for(var j = 0, jLen = teams.length; j < jLen; j++){
+          senddata.move[teams[i][j].character] = [ teams[i][j].position[0] , teams[i][j].position[1] ];
+        }
+      }
+
+      socket.emit('update', senddata );
       return
     }
     var waifuTeam;
