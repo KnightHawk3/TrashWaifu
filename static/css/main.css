@@ -68,3 +68,15 @@ img {
 #gamescreen {
   display: none;
 }
+
+#splashname {
+  color: white;
+  font-size: 54px;
+  text-align: center;
+}
+
+#splashjumbo {
+  width: 1030px;
+  margin-left: auto;
+  margin-right: auto;
+}

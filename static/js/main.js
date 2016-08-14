@@ -47,6 +47,7 @@ socket.on('start', function(data){
   loadPageById('gamescreen');
   anim.setStage();
   anim.loadTeams();
+  anim.center();
   anim.startAnim();
 
   setTimeout( function() {

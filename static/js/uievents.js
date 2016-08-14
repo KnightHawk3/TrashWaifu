@@ -23,10 +23,11 @@ function playSound(file) {
   audio.play();
 }
 
-function mouseOverCharacterArt(elem){
+function mouseOverCharacterArt(elem, name){
   var searchPic = new Image();
   searchPic.onload = function () {
     document.getElementById("splash").src = elem;
   }
+  document.getElementById("splashname").innerHTML = name;
   searchPic.src = elem;
 }
