@@ -1,7 +1,7 @@
 function loginWithName(){
-  var name = prompt("Please enter your username", "Lewis Bobbermen")
+  username = prompt("Please enter your username", "Lewis Bobbermen")
 
-  socket.emit('login', { username: name });
+  socket.emit('login', { username: username });
 
   socket.on('login', function(data){
     if (data.authenticated){
@@ -10,6 +10,7 @@ function loginWithName(){
       })
 
       socket.on('join', function(data){
+        gameid = data.game_id
         playSound('waifu_faito.mp3');
         loadPageById('pickscreen');
       });

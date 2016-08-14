@@ -6,8 +6,11 @@ var mouseClickedFlag = false;
 var mousePos = { x: 0, y: 0 };
 var firstLoginFlag = false;
 var map = [];
+var username;
+var gameid;
 
 var players = [];
+var myteam = -1;
 var teams = [];
 var selectedWaifu = { i: -1, j: -1 };
 
@@ -33,6 +36,14 @@ socket.on('start', function(data){
   players = data.players;
   teams = data.teams;
 
+  for(var i = 0, iLen = data.players.length; i < iLen; i++){
+    console.log(data.players[i][1])
+    console.log(username);
+    if(data.players[i][1] == username){
+      myteam = data.players[i][0]
+    }
+  }
+
   loadPageById('gamescreen');
   anim.setStage();
   anim.loadTeams();
@@ -48,6 +59,12 @@ socket.on('start', function(data){
       anim.setSpritePos(pos, (selectedWaifu.i * 4) + selectedWaifu.j );
       selectedWaifu = { i: -1, j: -1 };
       anim.setPathFindingOrigin(0, 0);
+
+      socket.emit('update', {
+        move: ,
+        game_id: gameid,
+      });
+
       return
     }
     var waifuTeam;
@@ -63,12 +80,15 @@ socket.on('start', function(data){
     }
 
     // team check later
-    if(waifuTeam != undefined){
+    if(waifuTeam == myteam){
       anim.setPathFindingOrigin(pos.x, pos.y);
+      selectedWaifu.i = waifuTeam;
+      selectedWaifu.j = waifuNumber;
     }
 
-    selectedWaifu.i = waifuTeam;
-    selectedWaifu.j = waifuNumber;
+    if(waifuTeam != myteam){
+      // attack code
+    }
   }) }, 300);
 
   console.log(data);
