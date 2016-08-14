@@ -23,3 +23,7 @@ window.addEventListener('mousemove', function(event) {
   }
   anim.mousePosition(event.pageX, event.pageY);
 })
+
+socket.on('start', function(data){
+  console.log(data);
+});

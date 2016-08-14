@@ -69,10 +69,12 @@ Animation.prototype.setStage = function(){
   for(var x = 0; x < this.boardSize.x; x++ ){
     for(var y = 0; y < this.boardSize.y; y++){
       var texture;
-      if(map[x][y] == 1 ){
-        var texture = PIXI.Texture.fromImage('static/images/walltile_blank.png');
+      if( map[x][y] == 1 ){
+        texture = PIXI.Texture.fromImage('static/images/walltile_blank.png');
+      } else if ( map[x][y] == 2 ) {
+        texture = PIXI.Texture.fromImage('static/images/desk.png');
       } else {
-        var texture = PIXI.Texture.fromImage('static/images/floor.png');
+        texture = PIXI.Texture.fromImage('static/images/floor.png');
       }
       var tile = new PIXI.Sprite(texture);
 

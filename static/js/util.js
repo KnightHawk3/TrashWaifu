@@ -21,6 +21,6 @@ function pickWaifu(waifu, id){
   document.getElementById(id).style.borderColor = 'blue';
 
   if( waifus.length >= 4 ){
-    socket.emit('pick', { charids: waifus });
+    socket.emit('pick', { char_ids: waifus });
   }
 }
