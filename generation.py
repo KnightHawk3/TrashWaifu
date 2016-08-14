@@ -55,8 +55,20 @@ class Leaf:
         dx = x - self.x
         dy = y - self.y
         print(str(dx) + " vs " + str(self.width/2))
-        if dx == ceil(self.width/2) or dx == floor(self.width/2) or dy == ceil(self.height/2) or dy == floor(self.height/2):
-            return False
+        if self.width > 9:
+            if dx == ceil(self.width / 4) or dx == floor(self.width / 4) \
+                    or dx == ceil((self.width / 4) * 3) or dx == floor((self.width / 4) * 3):
+                return False
+        else:
+            if dx == ceil(self.width / 2) or dx == floor(self.width / 2):
+                return False
+        if self.height > 9:
+            if dy == ceil(self.height/4) or dy == floor(self.height/4) \
+                    or dy == ceil((self.height / 4) * 3) or dy == floor((self.height / 4) * 3):
+                return False
+        else:
+            if dy == ceil(self.height/2) or dy == floor(self.height/2):
+                return False
         return is_edge
 
     def get_lowest_leaves(self, leaves):
