@@ -3,6 +3,7 @@ var Animation = function(){
   this.renderer.backgroundColor = 0x201a28;
 
   this.boardSize = { x: 27, y: 14 }
+  this.PFO = {x: 0, y: 0}
 
   document.getElementById("gamescreen").appendChild(this.renderer.view);
 
@@ -20,8 +21,8 @@ var Animation = function(){
 
 Animation.prototype.startAnim = function(){
   var self = this;
-  var grid, finder, gridBackup,
-  oldMouseOver = {x: 0, y: 0};
+  var grid, finder, gridBackup, oldMouseOver = {x: 0, y: 0};
+  var path = [];
 
   grid = new PF.Grid(this.boardSize.x, this.boardSize.y);
 
@@ -65,7 +66,7 @@ Animation.prototype.startAnim = function(){
     grid = gridBackup.clone();
     if(oldMouseOver.x != self.mouseOverTile.x || oldMouseOver.y != self.mouseOverTile.y){
       oldMouseOver = self.mouseOverTile;
-      path = finder.findPath(1, 1, self.mouseOverTile.x, self.mouseOverTile.y, grid);
+      path = finder.findPath(self.PFO.x, self.PFO.y, self.mouseOverTile.x, self.mouseOverTile.y, grid);
     }
 
     path = path.slice(0, 6);
@@ -162,4 +163,17 @@ Animation.prototype.center = function(){
 
   this.stage.x += ((canvaswidth - boardwidth) + 65) / 2;
   this.stage.y += ((canvasheight - boardheight) + 65) / 2;
+}
+
+Animation.prototype.getMouseOverTile = function(){
+  return this.mouseOverTile;
+}
+
+Animation.prototype.setPathFindingOrigin = function(xpos, ypos){
+  this.PFO = {x: xpos, y: ypos}
+}
+
+Animation.prototype.setSpritePos = function(pos, spritenumber){
+  this.sprites[spritenumber].position.x = pos.x * 65;
+  this.sprites[spritenumber].position.y = pos.y * 65;
 }
