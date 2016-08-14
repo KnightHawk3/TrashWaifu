@@ -32,12 +32,12 @@ def on_update(data):
             player_ref = player
 
     for waifu in data['move']:
-        if player_ref.username == game_ref.players[0]:
+        if player_ref == game_ref.players[0]:
             for wif in game_ref.team1:
                 if wif.charactertype.name == waifu:
                     wif.try_move((data['move'][waifu][0],
                                   data['move'][waifu][1]))
-        if player_ref.username == game_ref.players[1]:
+        if player_ref == game_ref.players[1]:
             for wif in game_ref.team2:
                 if wif.charactertype.name == waifu:
                     wif.try_move((data['move'][waifu][0],
